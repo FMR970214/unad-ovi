@@ -3,17 +3,24 @@
         <title>OVI UNAD.</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="index.css?version=1.0">
-        <link rel="stylesheet" href="prism/prism.css?version=1">
-        <script src="prism/prism.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="highlight/styles/github.css">
+        <script src="highlight/highlight.pack.js" charset="utf-8"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
         <section class="main-container">
+            <div id="sfc7lds4juxxuxmp9p5mwq3s1yxpxqr6ag5"></div>
+            <script type="text/javascript" src="https://counter10.wheredoyoucomefrom.ovh/private/counter.js?c=7lds4juxxuxmp9p5mwq3s1yxpxqr6ag5&down=async" async></script>
+            <noscript><a href="https://www.contadorvisitasgratis.com" title="contador web"><img src="https://counter10.wheredoyoucomefrom.ovh/private/contadorvisitasgratis.php?c=7lds4juxxuxmp9p5mwq3s1yxpxqr6ag5" border="0" title="contador web" alt="contador web"></a></noscript>
+            <div class="banner">
+                <img src="assets/banner.png">
+            </div>
             <h1 class="title">
                 CONEXIÓN A BASE DE DATOS CON PHP 
             </h1>
             <div class="header-img-container">
                 <img class="header-img" src="assets/php-mysql-portada.png"/>
-                <img class="header-img" src="assets/unad.png"/>
+                <!--<img class="header-img" src="assets/unad.png"/>-->
             </div>
             <p>
                 hoy Aprenderemos a conectarnos a una base de datos MySQL usando PHP y mas especificamente sus funcionalidades PDO,
@@ -38,27 +45,130 @@
                 Ahora ya podremos crear nuestra clase conexión la cual tendrá el método instancia que se encargará de abrir la conexión a nuestra base de datos, 
                 Una vez creada tendremos nuestra conexión creada la cual podremos incluir en donde lo necesitemos en nuestro proyecto.
             </p>
-            <code>
-                    &nbsp;const db_nombre='pruebaunad';<br>
-                    const db_usuario='root';<br>
-                    const db_password='*Loporti71';<br>
-                    const db_host='localhost';<br>
-                    //const dsn="pgsql:host=".db_host.";dbname=".db_nombre;//PostGreSQL<br>
-                    const dsn="mysql:host=".db_host.";dbname=".db_nombre;//MySQL<br>
-                    class conexion{<br>
-                    public static function instancia(){<br>
-                            try{<br>
-                                $pdo = new PDO(dsn,db_usuario, db_password);<br>
-                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);<br>
-                                $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);<br>
-                                return $pdo;<br>
-                            }catch( PDOException $e){<br>
-                                return $e;<br>
-                            } <br> 
-                        }<br>
-                    }<br>
-            </code>
+            <pre>
+                <code class="php">
+                const db_nombre='pruebaunad';
+                const db_usuario='root';
+                const db_password='*Loporti71';
+                const db_host='localhost';
+                //const dsn="pgsql:host=".db_host.";dbname=".db_nombre;//PostGreSQL
+                const dsn="mysql:host=".db_host.";dbname=".db_nombre;//MySQL
+                class conexion{
+                    public static function instancia(){
+                        try{
+                            $pdo = new PDO(dsn,db_usuario, db_password);
+                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                            return $pdo;
+                        }catch( PDOException $e){
+                            return $e;
+                        }  
+                    }
+                }
+                </code>
+            </pre>
+            <h3 class="subtitle">¿Como Lo Uso?</h3>
+            <p>
+                El uso de nuestra conexión ahora es pan comido, solo tenemos que incluir nuestro archivo <b>conexión.php</b> y declarar nuestra clase conexión en donde la necesitemos así:
+            </p>
+            <pre>
+                <code class="php">
+                    $db=conexion::instancia();
+                </code>
+            </pre>
+            <h3 class="subtitle">¿y Ahora Que?</h3>
+            <p>
+                Ahora que ya tenemos todo preparado podemos empezar a solicitarle y enviarle peticiones a nuestro motor de base de datos.
+                A continuación, tendrás algunos ejemplos del uso de la conexión a la base de datos, para lo cual haremos las consultas a la siguiente tabla.
+            </p>
+            <div class="header-img-container">
+                <img class="img-table" src="assets/tabla.PNG">
+            </div>
+            <h3 class="subtitle">SELECT</h3>
+            <pre>
+                <code class="php">
+                    $db=conexion::instancia();
+                    $statement=$db->prepare("SELECT * FROM estudiantes ORDER BY nombres ASC;");
+                    $statement->execute();
+                    $estudiantes=$statement->fetchAll();
+                </code>
+            </pre>
+            <h3 class="subtitle">INSERT</h3>
+            <pre>
+                <code class="php">
+                    $db=conexion::instancia();
+                    $nombres='FERNANDO MONSALVE RANGEL';
+                    $documento='1100970715';
+                    $statement=$db->prepare("INSERT INTO estudiantes (nombres,documento) VALUES ('".$nombres."','".$documento."');");
+                    $statement->execute();
+                    if($statement->rowCount()>0){
+                        echo 'insertado';
+                    }else{
+                        echo 'no insertado';
+                    }
+                </code>
+            </pre>
+            <h3 class="subtitle">DELETE</h3>
+            <pre>
+                <code class="php">
+                    $db=conexion::instancia();
+                    $documento='1100970715';
+                    $statement=$db->prepare("DELETE FROM estudiantes WHERE documento='".$documento."';");
+                    $statement->execute();
+                    if($statement->rowCount()>0){
+                        echo 'eliminado';
+                    }else{
+                        echo 'no eliminado';
+                    }
+                </code>
+            </pre>
+            <h3 class="subtitle">UPDATE</h3>
+            <pre>
+                <code class="php">
+                    $db=conexion::instancia();
+                    $documento='1100970715';
+                    $newName=’Mi Nuevo Nombre’;
+                    $statement=$db->prepare("UPDATE estudiantes SET nombres=’”.$newName.”’ WHERE documento=’”.$documento.”’");
+                    $statement->execute();
+                    if($statement->rowCount()>0){
+                        echo 'Actualizado';
+                    }else{
+                        echo 'no Actualizado ';
+                    }
+                </code>
+            </pre>
+            <p>
+                Seguramente tienes algunas preguntas como que hacen los métodos que estas usando de tu conexión, a continuación, te explico que hacen cada uno de ellos.
+            </p>
+            <h3 class="subtitle">PDO->prepare(sql):</h3>
+            <p>
+                Este método prepara tu sentencia para enviarla al motor de base de datos, recibe una sentencia SQL como parámetro.<br>
+                <a href="https://www.php.net/manual/es/pdo.prepare.php" target="_blank" >VER MAS</a>
+            </p>
+            <h3 class="subtitle">PDO->execute():</h3>
+            <p>
+                Ejecuta tu sentencia preparada.<br>
+                <a href="https://www.php.net/manual/es/pdostatement.execute.php" target="_blank" >VER MAS</a>
+                
+            </p>
+            <h3 class="subtitle">PDO->fetchAll():</h3>
+            <p>
+                Devuelve en forma de array el resultado obtenido de la consulta (solo aplica cuando obtenemos algo del motor de base de datos), recibe varios parámetros para determinar como obtendremos el array, ve al enlace para conocerlos más a fondo.<br>
+                <a href="https://www.php.net/manual/es/pdostatement.fetchall.php" target="_blank" >VER MAS</a>
+            </p>
+            <h3 class="subtitle">PDO->rowCount():</h3>
+            <p>
+                Devuelve el numero de filas afectadas por la ultima consulta enviada.<br>
+                <a href="https://www.php.net/manual/es/pdostatement.rowcount.php" target="_blank" >VER MAS</a>
+            </p>
+            <br>
+            <p>
+                Ahora que ya sabes que es PDO, para que funciona y como funciona estas listo para implementarlo en tu proyecto PHP, ¡Buena Suerte!
+            </p>
         </section>
+        <div class="twitter">
+            <a class="twitter-timeline" href="https://twitter.com/UniversidadUNAD?ref_src=twsrc%5Etfw">Tweets by UniversidadUNAD</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </body>
 </html>
 
