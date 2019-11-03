@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>OVI UNAD.</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="index.css?version=1.0">
+        <link rel="stylesheet" href="prism/prism.css?version=1">
+        <script src="prism/prism.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <section class="main-container">
+            <h1 class="title">
+                CONEXIÓN A BASE DE DATOS CON PHP 
+            </h1>
+            <div class="header-img-container">
+                <img class="header-img" src="assets/php-mysql-portada.png"/>
+                <img class="header-img" src="assets/unad.png"/>
+            </div>
+            <p>
+                hoy Aprenderemos a conectarnos a una base de datos MySQL usando PHP y mas especificamente sus funcionalidades PDO,
+                Este Proceso es indispensable a lahora de crear pagina web con funcionalidades que requieran obtener información y/o 
+                datos:
+            </p>
+            <h3 class="subtitle">¿Que Se Necesita?</h3>
+            <ul>
+                <li>PHP +5.7 (Recomendable usar PHP +7.0 por motivos de rendimiento).</li>
+                <li>Usuario DB</li>
+                <li>PostgreSQL +9 o MySQL </li>
+                <li>Contraseña DB</li>
+                <li>Host DB</li>
+                <li>Crear el archivo conexión.php (aquí haremos la conexión y gestionaremos todo).</li>
+            </ul>
+            <h3 class="subtitle">Crea Tu Conexión</h3>
+            <p>
+                Crea tu conexión.
+                Una vez creado el archivo conexión.php empezaremos creando una clase para nuestra conexión la cual gestionará todo lo referente a ella en donde instanciemos el archivo.
+                Para ello necesitamos vamos a necesitar los parámetros solicitados anteriormente, en este caso los declaramos como constantes, después procedemos a crear el DSN, que es
+                donde le indicamos a PDO a que base de datos nos vamos a conectar, en nuestro caso tenemos ejemplos tanto para MySQL como para PostgreSQL.
+                Ahora ya podremos crear nuestra clase conexión la cual tendrá el método instancia que se encargará de abrir la conexión a nuestra base de datos, 
+                Una vez creada tendremos nuestra conexión creada la cual podremos incluir en donde lo necesitemos en nuestro proyecto.
+            </p>
+            <code>
+                    &nbsp;const db_nombre='pruebaunad';<br>
+                    const db_usuario='root';<br>
+                    const db_password='*Loporti71';<br>
+                    const db_host='localhost';<br>
+                    //const dsn="pgsql:host=".db_host.";dbname=".db_nombre;//PostGreSQL<br>
+                    const dsn="mysql:host=".db_host.";dbname=".db_nombre;//MySQL<br>
+                    class conexion{<br>
+                    public static function instancia(){<br>
+                            try{<br>
+                                $pdo = new PDO(dsn,db_usuario, db_password);<br>
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);<br>
+                                $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);<br>
+                                return $pdo;<br>
+                            }catch( PDOException $e){<br>
+                                return $e;<br>
+                            } <br> 
+                        }<br>
+                    }<br>
+            </code>
+        </section>
+    </body>
+</html>
+
